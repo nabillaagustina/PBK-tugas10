@@ -28,6 +28,7 @@ PBK-tugas10/
 └── README.md # Dokumentasi proyek ini
 
 
+
 ---
 
 ## 🚀 Cara Menjalankan
@@ -35,5 +36,6 @@ PBK-tugas10/
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/nabillaagustina/PBK-tugas10.git
-cd PBK-tugas10
+git clone https://github.com/nabillaagustina/uaspbk
+cd nabilla-uaspbk
+
