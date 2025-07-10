@@ -1,25 +1,37 @@
+// router/index.js
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
-import Product from '../views/Product.vue'
-import Contact from '../views/Contact.vue'
-import { Auth } from '../stores/auth'
+
+import DashboardView from '../views/DashboardView.vue'
+import ProdukView from '../views/ProdukView.vue'
+import AnggotaView from '../views/AnggotaView.vue'
+import BarangMasukView from '../views/BarangMasukView.vue'
+import BarangKeluarView from '../views/BarangKeluarView.vue'
+import LoginView from '../views/LoginView.vue'
+import LogoutView from '../views/LogoutView.vue'
 
 const routes = [
-  { path: '/', name: 'Login', component: Login },
-  { path: '/home', name: 'Home', component: Home, meta: { requiresAuth: true } },
-  { path: '/products', name: 'Product', component: Product, meta: { requiresAuth: true } },
-  { path: '/contact', name: 'Contact', component: Contact, meta: { requiresAuth: true } },
+  { path: '/', redirect: '/dashboard' },
+  { path: '/dashboard', component: DashboardView },
+  { path: '/produk', component: ProdukView },
+  { path: '/anggota', component: AnggotaView },
+  { path: '/barang-masuk', component: BarangMasukView },
+  { path: '/barang-keluar', component: BarangKeluarView },
+  { path: '/login', component: LoginView },
+  { path: '/logout', component: LogoutView },
 ]
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 })
 
+// 👇 Navigation Guard
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !Auth.isAuthenticated()) {
-    next('/')
+  const isLoggedIn = localStorage.getItem('loggedIn') === 'true'
+  if (to.path !== '/login' && !isLoggedIn) {
+    next('/login')
+  } else if (to.path === '/login' && isLoggedIn) {
+    next('/dashboard')
   } else {
     next()
   }

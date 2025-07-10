@@ -1,0 +1,20 @@
+{
+  "users": [
+    { "id": 1, "username": "admin", "password": "admin" },
+    { "id": 2, "username": "petshop", "password": "1234" }
+  ],
+  "produk": [
+    { "id": 1, "nama": "Makanan Kucing", "stok": 10 },
+    { "id": 2, "nama": "Vitamin Anjing", "stok": 5 }
+  ],
+  "anggota": [
+    { "id": 1, "nama": "Dina" },
+    { "id": 2, "nama": "Rina" }
+  ],
+  "barangMasuk": [
+    { "id": 1, "nama": "Shampoo Anjing", "foto": "https://via.placeholder.com/100" }
+  ],
+  "barangKeluar": [
+    { "id": 1, "nama": "Snack Kucing", "jumlah": 2 }
+  ]
+}

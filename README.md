@@ -1,5 +1,39 @@
-# Vue 3 + Vite
+# 🐾 Petshop Management System - PBK Tugas 10
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Aplikasi manajemen petshop berbasis web menggunakan **Vue.js** + **JSON Server** sebagai backend mock API.
 
-Learn more about IDE Support for Vue in the [Vue Docs Scaling up Guide](https://vuejs.org/guide/scaling-up/tooling.html#ide-support).
+---
+
+## 📦 Fitur Utama
+
+- 🔐 Login dan Logout
+- 📊 Dashboard (Statistik data)
+- 🐶 Data Produk (makanan, mainan, vitamin, dll)
+- 👥 Data Anggota (pelanggan)
+- 📥 Barang Masuk (input stok baru)
+- 📤 Barang Keluar (penjualan/barang keluar)
+- 🖼️ Upload Gambar Produk (opsional)
+
+---
+
+## 🧱 Struktur Folder
+
+PBK-tugas10/
+├── src/
+│ ├── views/ # Semua halaman tampilan (.vue)
+│ ├── router/ # Routing (index.js)
+│ └── main.js # Entry point aplikasi
+├── db.json # Database untuk JSON Server
+├── package.json # Konfigurasi npm
+└── README.md # Dokumentasi proyek ini
+
+
+---
+
+## 🚀 Cara Menjalankan
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/nabillaagustina/PBK-tugas10.git
+cd PBK-tugas10
