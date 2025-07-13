@@ -3,7 +3,12 @@
     <h1>📤 Barang Keluar</h1>
 
     <div class="form-inline">
-      <input v-model="nama" placeholder="Nama barang" />
+      <select v-model="selectedId" @change="setProduk">
+        <option disabled value="">📦 Pilih Produk</option>
+        <option v-for="p in produkList" :key="p.id" :value="p.id">
+          {{ p.nama }} (stok: {{ p.stok }})
+        </option>
+      </select>
       <input type="number" v-model.number="jumlah" placeholder="Jumlah" min="1" />
       <button @click="tambah" class="btn tambah">+ Tambah</button>
     </div>
@@ -11,18 +16,21 @@
     <p v-if="pesan" class="pesan">{{ pesan }}</p>
 
     <div class="filter-bar">
-      <input v-model="filter" placeholder="Cari barang keluar..." />
+      <input v-model="filter" placeholder="🔍 Cari barang keluar..." />
     </div>
 
-    <ul class="list">
-      <li v-for="(b, i) in filteredList" :key="i">
-        <div>
-          <strong>{{ b.nama }}</strong> - {{ b.jumlah }} pcs
-          <small class="tgl"> ({{ b.tanggal }})</small>
+    <div class="list">
+      <div class="card" v-for="b in filteredList" :key="b.id">
+        <div class="info">
+          <strong>{{ b.nama }}</strong>
+          <span>{{ b.jumlah }} pcs</span>
         </div>
-        <button @click="hapus(i)" class="btn hapus">🗑️</button>
-      </li>
-    </ul>
+        <div class="meta">
+          <small>{{ b.tanggal }}</small>
+          <button @click="hapus(b.id)" class="btn hapus">🗑️</button>
+        </div>
+      </div>
+    </div>
 
     <div v-if="list.length" class="total">
       Total Barang Keluar: <strong>{{ total }}</strong> pcs
@@ -31,60 +39,126 @@
 </template>
 
 <script>
+import axios from 'axios'
+const API = 'http://localhost:3006'
+
 export default {
-  data: () => ({
-    nama: '',
-    jumlah: 0,
-    list: [],
-    pesan: '',
-    filter: ''
-  }),
+  data() {
+    return {
+      produkList: [],
+      selectedId: '',
+      jumlah: 0,
+      list: [],
+      filter: '',
+      pesan: ''
+    }
+  },
   computed: {
     total() {
-      return this.list.reduce((sum, b) => sum + b.jumlah, 0);
+      return this.list.reduce((sum, b) => sum + b.jumlah, 0)
     },
     filteredList() {
       return this.list.filter(item =>
         item.nama.toLowerCase().includes(this.filter.toLowerCase())
-      );
+      )
     }
   },
   methods: {
-    tambah() {
-      if (!this.nama.trim() || this.jumlah <= 0) {
-        this.pesan = 'Nama dan jumlah harus diisi dengan benar.';
-        setTimeout(() => (this.pesan = ''), 3000);
-        return;
+    async ambilData() {
+      try {
+        const [barangKeluarRes, produkRes] = await Promise.all([
+          axios.get(`${API}/barangKeluar`),
+          axios.get(`${API}/produk`)
+        ])
+        this.list = barangKeluarRes.data
+        this.produkList = produkRes.data
+      } catch (e) {
+        this.pesan = 'Gagal mengambil data.'
+      }
+    },
+    setProduk() {
+      // Opsional, bisa digunakan kalau mau sync nama produk
+    },
+    async tambah() {
+      if (!this.selectedId || this.jumlah <= 0) {
+        this.pesan = 'Pilih produk dan isi jumlah yang valid.'
+        setTimeout(() => (this.pesan = ''), 3000)
+        return
+      }
+
+      const produk = this.produkList.find(p => p.id === this.selectedId)
+      if (!produk) {
+        this.pesan = 'Produk tidak ditemukan.'
+        setTimeout(() => (this.pesan = ''), 3000)
+        return
+      }
+
+      if (produk.stok < this.jumlah) {
+        this.pesan = 'Stok tidak cukup.'
+        setTimeout(() => (this.pesan = ''), 3000)
+        return
       }
 
       const tanggal = new Date().toLocaleDateString('id-ID', {
         day: '2-digit',
         month: 'short',
         year: 'numeric'
-      });
+      })
 
-      this.list.push({ nama: this.nama, jumlah: this.jumlah, tanggal });
-      this.nama = '';
-      this.jumlah = 0;
-      this.pesan = '';
+      const dataKeluar = {
+        nama: produk.nama,
+        jumlah: this.jumlah,
+        tanggal
+      }
+
+      try {
+        // Simpan data barang keluar
+        const { data } = await axios.post(`${API}/barangKeluar`, dataKeluar)
+
+        // Update stok produk
+        await axios.put(`${API}/produk/${produk.id}`, {
+          ...produk,
+          stok: produk.stok - this.jumlah
+        })
+
+        this.list.push(data)
+
+        // Reset input
+        this.selectedId = ''
+        this.jumlah = 0
+        this.pesan = ''
+      } catch {
+        this.pesan = 'Gagal menyimpan data.'
+      }
     },
-    hapus(i) {
-      this.list.splice(i, 1);
+    async hapus(id) {
+      if (!confirm('Yakin hapus item ini?')) return
+      try {
+        await axios.delete(`${API}/barangKeluar/${id}`)
+        this.list = this.list.filter(b => b.id !== id)
+      } catch {
+        alert('Gagal menghapus data.')
+      }
     }
+  },
+  mounted() {
+    this.ambilData()
   }
-};
+}
 </script>
 
 <style scoped>
 .container {
   padding: 30px;
-  background-color: #fff8f0;
+  background-color: #fdfcf6;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 h1 {
-  color: #ff8c42;
+  color: #3498db;
   text-align: center;
   margin-bottom: 20px;
   font-size: 26px;
@@ -97,36 +171,38 @@ h1 {
   margin-bottom: 15px;
 }
 
-input {
+select,
+input[type='number'] {
+  flex: 1 1 45%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
-  flex: 1;
-  min-width: 150px;
 }
 
 .btn {
   padding: 10px 16px;
+  border: none;
   border-radius: 8px;
   font-weight: bold;
-  border: none;
   cursor: pointer;
   transition: 0.3s ease;
 }
 
 .btn.tambah {
-  background-color: #ff8c42;
+  background-color: #3498db;
   color: white;
 }
 
 .btn.tambah:hover {
-  background-color: #ffa45b;
+  background-color: #5dade2;
 }
 
 .btn.hapus {
   background-color: #e74c3c;
   color: white;
+  padding: 6px 10px;
+  font-size: 14px;
 }
 
 .btn.hapus:hover {
@@ -135,40 +211,65 @@ input {
 
 .pesan {
   color: #e74c3c;
-  font-size: 14px;
-  margin-bottom: 10px;
   text-align: center;
+  margin-bottom: 10px;
 }
 
 .filter-bar {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-bar input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
 }
 
 .list {
-  list-style: none;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.list li {
-  background: white;
-  margin-bottom: 10px;
-  padding: 12px;
-  border-radius: 8px;
+.card {
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info strong {
+  font-size: 16px;
+  color: #2c3e50;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.meta small {
+  color: #888;
+  font-size: 12px;
 }
 
 .total {
-  text-align: right;
   margin-top: 20px;
-  font-weight: bold;
-  color: #333;
-}
-
-.tgl {
-  font-size: 12px;
-  color: #999;
+  text-align: center;
+  font-size: 16px;
+  background-color: #ecf0f1;
+  padding: 10px;
+  border-radius: 8px;
 }
 </style>

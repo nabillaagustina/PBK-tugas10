@@ -3,151 +3,148 @@
     <h1>📦 Barang Masuk</h1>
 
     <div class="form-inline">
-      <input v-model="nama" placeholder="Nama barang..." />
-      <input type="file" @change="setFoto" accept="image/*" />
-      <button @click="tambah" class="btn tambah">+ Tambah</button>
-    </div>
+  <input v-model="nama" placeholder="Nama barang..." />
+  <input v-model="foto" placeholder="URL foto barang..." />
+  <button @click="tambah" class="btn tambah">+ Tambah</button>
+</div>
+
 
     <p v-if="pesan" class="pesan">{{ pesan }}</p>
 
-    <div class="grid">
-      <div class="card" v-for="(b, i) in list" :key="i">
-        <img :src="b.foto" alt="foto barang" />
-        <p class="nama">{{ b.nama }}</p>
-        <button @click="hapus(i)" class="btn hapus">🗑️ Hapus</button>
-      </div>
-    </div>
+    <ul class="list">
+      <li v-for="b in list" :key="b.id" class="item">
+        <span>{{ b.nama }}</span>
+        <button @click="hapus(b.id)" class="btn hapus">🗑️</button>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+const API = 'http://localhost:3006/barangMasuk'
+
 export default {
-  data: () => ({
-    nama: '',
-    foto: null,
-    list: [],
-    pesan: ''
-  }),
-  methods: {
-    setFoto(e) {
-      const file = e.target.files[0];
-      if (file) {
-        this.foto = URL.createObjectURL(file);
-      }
-    },
-    tambah() {
-      if (!this.nama || !this.foto) {
-        this.pesan = 'Nama dan foto barang wajib diisi.';
-        setTimeout(() => (this.pesan = ''), 3000);
-        return;
-      }
-      this.list.push({ nama: this.nama, foto: this.foto });
-      this.nama = '';
-      this.foto = null;
-      this.pesan = '';
-      // Reset file input
-      this.$el.querySelector('input[type="file"]').value = null;
-    },
-    hapus(i) {
-      this.list.splice(i, 1);
+  data() {
+    return {
+      nama: '',
+      list: [],
+      pesan: ''
     }
+  }, 
+  methods: {
+    async ambilData() {
+      const res = await axios.get(API)
+      this.list = res.data
+    },
+    async tambah() {
+      if (!this.nama.trim()) {
+        this.pesan = 'Nama barang wajib diisi.'
+        setTimeout(() => (this.pesan = ''), 3000)
+        return
+      }
+
+      try {
+        const { data } = await axios.post(API, { nama: this.nama })
+        this.list.push(data)
+        this.nama = ''
+        this.pesan = ''
+      } catch {
+        this.pesan = 'Gagal menambahkan data.'
+      }
+    },
+    async hapus(id) {
+      if (!confirm('Yakin ingin menghapus barang ini?')) return
+      try {
+        await axios.delete(`${API}/${id}`)
+        this.list = this.list.filter(b => b.id !== id)
+      } catch {
+        alert('Gagal menghapus.')
+      }
+    }
+  },
+  mounted() {
+    this.ambilData()
   }
-};
+}
 </script>
 
 <style scoped>
 .container {
   padding: 30px;
-  background-color: #fff0f5;
+  background-color: #fffef4;
   border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 
 h1 {
-  color: #ff69b4;
-  font-size: 26px;
-  margin-bottom: 20px;
+  color: #f39c12;
   text-align: center;
+  margin-bottom: 20px;
+  font-size: 26px;
 }
 
 .form-inline {
   display: flex;
-  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 15px;
 }
 
-input[type="text"],
-input[type="file"] {
+input {
   flex: 1;
   padding: 10px;
-  border-radius: 8px;
   border: 1px solid #ccc;
+  border-radius: 8px;
   font-size: 14px;
-  background-color: #fff;
 }
 
 .btn {
   padding: 10px 16px;
+  border: none;
   border-radius: 8px;
   font-weight: bold;
-  border: none;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .btn.tambah {
-  background-color: #ff69b4;
+  background-color: #f39c12;
   color: white;
 }
 
 .btn.tambah:hover {
-  background-color: #ff8ab8;
+  background-color: #f5b041;
 }
 
 .btn.hapus {
   background-color: #e74c3c;
   color: white;
-  margin-top: 10px;
-  width: 100%;
 }
 
 .btn.hapus:hover {
   background-color: #c0392b;
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 15px;
-}
-
-.card {
-  background: white;
-  border-radius: 10px;
-  padding: 15px;
+.pesan {
+  color: #e74c3c;
   text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.card img {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 6px;
   margin-bottom: 10px;
 }
 
-.nama {
-  font-weight: 600;
-  font-size: 16px;
-  color: #444;
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.pesan {
-  color: #e74c3c;
-  font-size: 14px;
-  margin-bottom: 15px;
-  text-align: center;
+.item {
+  background: #fff;
+  padding: 12px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 </style>

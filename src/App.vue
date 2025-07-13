@@ -1,34 +1,37 @@
 <template>
   <div id="app">
-    <header>
-      <h1>🐾 Petshop Bila</h1>
+    <div class="layout">
+      <aside v-if="showNav" class="sidebar">
+        <h2>🐾 Bila</h2>
+        <nav>
+          <router-link to="/" exact-active-class="active">🏠 Dashboard</router-link>
+          <router-link to="/anggota" exact-active-class="active">👥 Anggota</router-link>
+          <router-link to="/barang-masuk" exact-active-class="active">📦 Masuk</router-link>
+          <router-link to="/barang-keluar" exact-active-class="active">📤 Keluar</router-link>
+          <router-link to="/produk" exact-active-class="active">🛒 Produk</router-link>
+          <router-link to="/logout" exact-active-class="active">🚪 Logout</router-link>
+        </nav>
+      </aside>
 
-      <nav v-if="showNav">
-        <ul class="navigasi">
-          <li><router-link to="/">🏠 Dashboard</router-link></li>
-          <li><router-link to="/anggota">👥 Data Anggota</router-link></li>
-          <li><router-link to="/barang-masuk">📦 Barang Masuk</router-link></li>
-          <li><router-link to="/barang-keluar">📤 Barang Keluar</router-link></li>
-          <li><router-link to="/produk">🛒 Produk</router-link></li>
-          <li><router-link to="/logout">🚪 Logout</router-link></li>
-        </ul>
-      </nav>
-    </header>
+      <div class="content">
+        <header class="topbar">
+          <h1>Petshop Bila</h1>
+        </header>
 
-    <main>
-      <router-view />
-    </main>
+        <main>
+          <router-view />
+        </main>
 
-    <footer>
-      <p>&copy; 2025 Petshop Bila</p>
-      <p>
-        📸 
-        <a href="https://www.instagram.com/midfreezer_/profilecard/?igsh=MTMzOWN5YWlvdG5uZg==" target="_blank">Instagram</a>
-        |
-        💻 
-        <a href="https://github.com/nabillaagustina/PBK-tugas10" target="_blank">GitHub</a>
-      </p>
-    </footer>
+        <footer>
+          <p>&copy; 2025 Petshop Bila</p>
+          <p>
+            📸 <a href="https://www.instagram.com/midfreezer_/" target="_blank">Instagram</a>
+            |
+            💻 <a href="https://github.com/nabillaagustina/PBK-tugas10" target="_blank">GitHub</a>
+          </p>
+        </footer>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -44,82 +47,89 @@ export default {
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
+  margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #fff8f5;
+  background-color: #fdfdfd;
   color: #333;
 }
 
-#app {
+.layout {
   display: flex;
-  flex-direction: column;
   min-height: 100vh;
 }
 
-header {
-  background: linear-gradient(to right, #ffa69e, #ffb347);
-  color: white;
-  padding: 25px 20px;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-header h1 {
-  margin-bottom: 10px;
-  font-size: 30px;
-  font-weight: 700;
-}
-
-.navigasi {
+.sidebar {
+  width: 220px;
+  background-color: #fbe3e8;
+  padding: 30px 20px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px;
-  list-style: none;
-  margin-top: 10px;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
 }
 
-.navigasi li {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  transition: background-color 0.3s ease;
+.sidebar h2 {
+  font-size: 24px;
+  color: #ff5f7e;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
-.navigasi li a {
+.sidebar a {
   display: block;
-  padding: 10px 18px;
-  color: #fff;
-  font-weight: 500;
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: #555;
   text-decoration: none;
+  transition: background-color 0.2s ease;
 }
 
-.navigasi li:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+.sidebar a.active,
+.sidebar a:hover {
+  background-color: #ffe2ea;
+  color: #ff5f7e;
+  font-weight: bold;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  padding: 20px;
+  text-align: center;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-size: 28px;
+  color: #ff5f7e;
 }
 
 main {
   flex: 1;
-  padding: 25px;
+  padding: 30px;
+  background-color: #fff8f8;
 }
 
 footer {
-  background-color: #ffa69e;
-  color: white;
   text-align: center;
   padding: 15px;
+  background-color: #fbe3e8;
+  color: #444;
   font-size: 14px;
+  border-top: 1px solid #f1cfd1;
 }
 
 footer a {
-  color: white;
+  color: #ff5f7e;
   font-weight: 500;
-  text-decoration: underline;
+  text-decoration: none;
   margin: 0 5px;
 }
 </style>

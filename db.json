@@ -1,20 +1,202 @@
 {
   "users": [
-    { "id": 1, "username": "admin", "password": "admin" },
-    { "id": 2, "username": "petshop", "password": "1234" }
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin"
+    },
+    {
+      "id": "2",
+      "username": "petshop",
+      "password": "1234"
+    },
+    {
+      "id": "3",
+      "username": "user1",
+      "password": "pass1"
+    },
+    {
+      "id": "4",
+      "username": "user2",
+      "password": "pass2"
+    },
+    {
+      "id": "5",
+      "username": "user3",
+      "password": "pass3"
+    }
   ],
   "produk": [
-    { "id": 1, "nama": "Makanan Kucing", "stok": 10 },
-    { "id": 2, "nama": "Vitamin Anjing", "stok": 5 }
+    {
+      "id": "1",
+      "nama": "Makanan Kucing",
+      "stok": 10
+    },
+    {
+      "id": "2",
+      "nama": "Vitamin Anjing",
+      "stok": 0
+    },
+    {
+      "id": "3",
+      "nama": "Mainan Kucing",
+      "stok": 15
+    },
+    {
+      "id": "4",
+      "nama": "Shampoo Anjing",
+      "stok": 8
+    },
+    {
+      "id": "5",
+      "nama": "Kalung Kucing",
+      "stok": 5
+    },
+    {
+      "id": "6",
+      "nama": "Tempat Makan Anjing",
+      "stok": 7
+    },
+    {
+      "id": "7",
+      "nama": "Obat Cacing Kucing",
+      "stok": 2
+    },
+    {
+      "id": "8",
+      "nama": "Tali Tali Anjing",
+      "stok": 9
+    },
+    {
+      "id": "9",
+      "nama": "Kasur Kucing",
+      "stok": 4
+    },
+    {
+      "id": "10",
+      "nama": "Snack Anjing",
+      "stok": 20
+    }
   ],
   "anggota": [
-    { "id": 1, "nama": "Dina" },
-    { "id": 2, "nama": "Rina" }
+    {
+      "id": "1",
+      "nama": "Dina"
+    },
+    {
+      "id": "2",
+      "nama": "Rina"
+    },
+    {
+      "id": "3",
+      "nama": "Budi"
+    },
+    {
+      "id": "4",
+      "nama": "Sari"
+    },
+    {
+      "id": "5",
+      "nama": "Joko"
+    },
+    {
+      "id": "ce02",
+      "nama": "deo "
+    }
   ],
   "barangMasuk": [
-    { "id": 1, "nama": "Shampoo Anjing", "foto": "https://via.placeholder.com/100" }
+    {
+      "id": "1",
+      "nama": "Shampoo Kucing",
+      "foto": "https://i.postimg.cc/Yqy9gNZK/shampoo-kucing.jpg"
+    },
+    {
+      "id": "2",
+      "nama": "Snack Anjing",
+      "foto": "https://i.postimg.cc/t4bCznzD/snack-anjing.jpg"
+    },
+    {
+      "id": "3",
+      "nama": "Makanan Kucing",
+      "foto": "https://i.postimg.cc/MKG8kG3S/makanan-kucing.jpg"
+    },
+    {
+      "id": "4",
+      "nama": "Vitamin Anjing",
+      "foto": "https://i.postimg.cc/tR9nhWkC/vitamin-anjing.jpg"
+    },
+    {
+      "id": "5",
+      "nama": "Mainan Kucing",
+      "foto": "https://i.postimg.cc/XY4RBpP6/mainan-kucing.jpg"
+    }
   ],
   "barangKeluar": [
-    { "id": 1, "nama": "Snack Kucing", "jumlah": 2 }
+    {
+      "id": "1",
+      "nama": "Snack Kucing",
+      "jumlah": 2,
+      "tanggal": "10 Jul 2025"
+    },
+    {
+      "id": "2",
+      "nama": "Vitamin Anjing",
+      "jumlah": 5,
+      "tanggal": "13 Jul 2025"
+    },
+    {
+      "id": "3",
+      "nama": "Makanan Kucing",
+      "jumlah": 3,
+      "tanggal": "11 Jul 2025"
+    },
+    {
+      "id": "4",
+      "nama": "Shampoo Kucing",
+      "jumlah": 1,
+      "tanggal": "12 Jul 2025"
+    },
+    {
+      "id": "5",
+      "nama": "Snack Anjing",
+      "jumlah": 4,
+      "tanggal": "13 Jul 2025"
+    },
+    {
+      "id": "6",
+      "nama": "Makanan Kucing",
+      "jumlah": 2,
+      "tanggal": "14 Jul 2025"
+    },
+    {
+      "id": "7",
+      "nama": "Vitamin Anjing",
+      "jumlah": 1,
+      "tanggal": "14 Jul 2025"
+    },
+    {
+      "id": "8",
+      "nama": "Shampoo Kucing",
+      "jumlah": 3,
+      "tanggal": "15 Jul 2025"
+    },
+    {
+      "id": "9",
+      "nama": "Snack Kucing",
+      "jumlah": 2,
+      "tanggal": "15 Jul 2025"
+    },
+    {
+      "id": "10",
+      "nama": "Makanan Kucing",
+      "jumlah": 5,
+      "tanggal": "16 Jul 2025"
+    },
+    {
+      "id": "70e2",
+      "nama": "Obat Cacing Kucing",
+      "jumlah": 10,
+      "tanggal": "13 Jul 2025"
+    }
   ]
 }

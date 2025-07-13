@@ -37,22 +37,22 @@ export default {
   },
   methods: {
     async ambilData() {
-      const res = await axios.get('http://localhost:3000/anggota')
+      const res = await axios.get('http://localhost:3006/anggota')
       this.list = res.data.map(a => ({ ...a, edit: false }))
     },
     async tambah() {
       if (!this.baru.trim()) return
-      const res = await axios.post('http://localhost:3000/anggota', { nama: this.baru })
+      const res = await axios.post('http://localhost:3006/anggota', { nama: this.baru })
       this.list.push({ ...res.data, edit: false })
       this.baru = ''
     },
     async hapus(id) {
-      await axios.delete(`http://localhost:3000/anggota/${id}`)
+      await axios.delete(`http://localhost:3006/anggota/${id}`)
       this.list = this.list.filter(a => a.id !== id)
     },
     async toggleEdit(item) {
       if (item.edit && item.nama.trim()) {
-        await axios.put(`http://localhost:3000/anggota/${item.id}`, { nama: item.nama })
+        await axios.put(`http://localhost:3006/anggota/${item.id}`, { nama: item.nama })
       }
       item.edit = !item.edit
     }
